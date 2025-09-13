@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sunlix.NET.DDD.ROP.Tests
+﻿namespace Sunlix.NET.DDD.ROP.Tests
 {
     internal static class Traits
     {

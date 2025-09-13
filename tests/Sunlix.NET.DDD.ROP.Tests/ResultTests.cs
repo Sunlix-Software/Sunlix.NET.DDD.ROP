@@ -107,7 +107,7 @@ namespace Sunlix.NET.DDD.ROP.Tests
         {
             Result.GenericSuccess<string> genericSuccess = default;
             Action act = () => { Result<string, Error> _ = genericSuccess; };
-            
+
             act.Should().Throw<ArgumentNullException>();
         }
 
@@ -117,7 +117,7 @@ namespace Sunlix.NET.DDD.ROP.Tests
         {
             Result.GenericFailure<Error> genericFailure = default;
             Action act = () => { Result<string, Error> _ = genericFailure; };
-            
+
             act.Should().Throw<ArgumentNullException>();
         }
 

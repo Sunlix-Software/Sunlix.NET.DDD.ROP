@@ -14,5 +14,10 @@
         public const string BindAsyncCategory = "BindAsync";
         public const string ExtensionsBindCategory = "ExtensionsBind";
         public const string ExtensionsBindAsyncCategory = "ExtensionsBindAsync";
+
+        public const string MapCategory = "Map";
+        public const string MapAsyncCategory = "MapAsync";
+        public const string ExtensionsMapCategory = "ExtensionsMap";
+        public const string ExtensionsMapAsyncCategory = "ExtensionsMapAsync";
     }
 }

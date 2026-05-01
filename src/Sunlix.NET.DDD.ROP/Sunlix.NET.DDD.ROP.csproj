@@ -21,9 +21,9 @@
 			It provides a composable Result type and a set of functional operators for building clear and predictable execution pipelines without exceptions.</Description>
 		<PackageTags>Sunlix, DDD, Result, ROP</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.BaseTypes</RepositoryUrl>
+		<RepositoryUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.BaseTypes</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP</PackageProjectUrl>
 		<PackageIcon>sunlix.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<IncludeSymbols>true</IncludeSymbols>

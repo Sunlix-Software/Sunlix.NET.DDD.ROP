@@ -234,7 +234,7 @@ var result = Result.Fail<string, Error>(Errors.NotFound);
       <summary>
         Creates a lightweight failure wrapper that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
       </summary>
-      <typeparam name="TError">The type of the failed result error.</typeparam>
+      <typeparam name="TFailure">The type of the failed result error.</typeparam>
       <param name="error">The error to wrap as failure.</param>
       <returns>
         A <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericFailure`1"/> wrapper 

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+
+    <!-- ======= Documentation for Tee methods ======= -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.Tee(System.Action{`0})">
+      <summary>
+        Executes a side effect on the success value if this result represents success, 
+        then returns the result unchanged.
+      </summary>
+      <param name="sideEffect">
+        An action to execute with the success value. This action should not modify the result.
+      </param>
+      <returns>
+        The same <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instance unchanged.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="sideEffect"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          Tee is useful for side effects like logging, auditing, or updating external state
+          without modifying the result value. It's called "tee" because it allows you to "tap" into 
+          the result flow while keeping the pipeline intact.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+void LogUserAccess(User user) { ... }
+
+Result<User, Error> result = GetUser(42)
+  .Tee(LogUserAccess);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.TeeAsync(System.Func{`0,System.Threading.Tasks.Task})">
+      <summary>
+        Asynchronously executes a side effect on the success value if this result represents success, 
+        then returns the result unchanged.
+      </summary>
+      <param name="sideEffectAsync">
+        An async action to execute with the success value. This action should not modify the result.
+      </param>
+      <returns>
+        A task that yields the same <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instance unchanged.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="sideEffectAsync"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          This is the asynchronous version of <see cref="M:Sunlix.NET.DDD.ROP.Result`2.Tee(System.Action{`0})"/>.
+          It allows you to perform asynchronous side effects while preserving the result.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+async Task LogUserAccessAsync(User user) { ... }
+
+Result<User, Error> result = await GetUserAsync(42)
+  .TeeAsync(LogUserAccessAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.TeeInternal(System.Action{`0})">
+      <summary>
+        Internal method that implements the tee operation for derived classes.
+      </summary>
+      <param name="sideEffect">
+        An action to execute with the success value.
+      </param>
+      <returns>
+        The result instance unchanged.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific tee behavior.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.TeeInternalAsync(System.Func{`0,System.Threading.Tasks.Task})">
+      <summary>
+        Internal method that implements the asynchronous tee operation for derived classes.
+      </summary>
+      <param name="sideEffectAsync">
+        An async action to execute with the success value.
+      </param>
+      <returns>
+        A task that yields the result instance unchanged.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific async tee behavior.
+        </para>
+      </remarks>
+    </member>
+
+
+    <!-- ======= Documentation for TeeExtensions ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.TeeExtensions">
+      <summary>
+        Provides extension methods for tee (side effect) operations on tasks that yield <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instances.
+      </summary>
+      <remarks>
+        <para>
+          These extension methods enable fluent chaining of side effect operations on asynchronous results,
+          allowing seamless execution of cross-cutting concerns like logging and auditing.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.TeeExtensions.Tee``2(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``0,``1}},System.Action{``0})">
+      <summary>
+        Executes a synchronous side effect on the result of an awaited task.
+      </summary>
+      <typeparam name="TSuccess">The type of the success value.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="sideEffect">
+        An action to execute with the success value if the result represents success.
+      </param>
+      <returns>
+        A task that yields the same result unchanged after executing the side effect.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="sideEffect"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain side effect operations after awaiting a task result,
+          providing convenient fluent syntax for Result operations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+void LogUserAccess(User user) { ... }
+
+Result<User, Error> result = await GetUserAsync(42)
+  .Tee(LogUserAccess);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.TeeExtensions.TeeAsync``2(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``0,``1}},System.Func{``0,System.Threading.Tasks.Task})">
+      <summary>
+        Asynchronously executes a side effect on the result of an awaited task.
+      </summary>
+      <typeparam name="TSuccess">The type of the success value.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="sideEffectAsync">
+        An async action to execute with the success value if the result represents success.
+      </param>
+      <returns>
+        A task that yields the same result unchanged after executing the async side effect.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="sideEffectAsync"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain asynchronous side effect operations after awaiting a task result,
+          providing convenient fluent syntax for async Result operations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+async Task LogUserAccessAsync(User user) { ... }
+
+Result<User, Error> result = await GetUserAsync(42)
+  .TeeAsync(LogUserAccessAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+  </members>
+</doc>

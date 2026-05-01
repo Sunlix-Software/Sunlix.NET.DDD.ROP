@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+
+    <!-- ======= Documentation for Result<TSuccess,TFailure> class ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.Result`2">
+      <summary>
+        Discriminated union that represents the outcome of an operation:
+        either a successful value of type <typeparamref name="TSuccess"/> or an error of type <typeparamref name="TFailure"/>.
+      </summary>
+      <typeparam name="TSuccess">The type of the successful value.</typeparam>
+      <typeparam name="TFailure">The type of the error.</typeparam>
+      <remarks>
+        <para>
+          Use <see cref="P:Sunlix.NET.DDD.ROP.Result`2.IsSuccess"/> / <see cref="P:Sunlix.NET.DDD.ROP.Result`2.IsFailure"/> to check the state.
+        </para>
+        <para>
+          Attempting to access <see cref="P:Sunlix.NET.DDD.ROP.Result`2.Value"/> on a failure
+          or <see cref="P:Sunlix.NET.DDD.ROP.Result`2.Error"/> on a success result throws <see cref="T:System.InvalidOperationException"/>.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- IsSuccess property -->
+    <member name="P:Sunlix.NET.DDD.ROP.Result`2.IsSuccess">
+      <summary>
+        A boolean value indicating whether this result represents a success.
+      </summary>
+      <value>
+        <c>true</c> if this result represents a success; otherwise, <c>false</c>.
+      </value>
+      <remarks>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- IsFailure property -->
+    <member name="P:Sunlix.NET.DDD.ROP.Result`2.IsFailure">
+      <summary>
+        A boolean value indicating whether this result represents a failure.
+      </summary>
+      <value>
+        <c>true</c> if this result represents a failure; otherwise, <c>false</c>.
+      </value>
+      <remarks>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Value property -->
+    <member name="P:Sunlix.NET.DDD.ROP.Result`2.Value">
+      <summary>
+        The value of the successful result.
+      </summary>
+      <value>
+        The value of type <typeparamref name="TSuccess"/>.
+      </value>
+      <exception cref="T:System.InvalidOperationException"></exception>
+      <remarks>
+        <para>
+          Attempting to access <see cref="P:Sunlix.NET.DDD.ROP.Result`2.Value"/> on a failure result throws <see cref="T:System.InvalidOperationException"/>.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Error property -->
+    <member name="P:Sunlix.NET.DDD.ROP.Result`2.Error">
+      <summary>
+        The error of the failed result.
+      </summary>
+      <value>
+        The error of type <typeparamref name="TFailure"/>.
+      </value>
+      <exception cref="T:System.InvalidOperationException"></exception>
+      <remarks>
+        <para>
+          Attempting to access <see cref="P:Sunlix.NET.DDD.ROP.Result`2.Error"/> on a successful result throws <see cref="T:System.InvalidOperationException"/>.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    
+    <!-- ======= Documentation for implicit operators ======= -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.op_Implicit(Sunlix.NET.DDD.ROP.Result.GenericSuccess{`0})">
+      <summary>
+        Implicitly converts a <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericSuccess`1"/> wrapper to a successful <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <param name="success">The success wrapper containing the value.</param>
+      <returns>A successful result containing the specified value.</returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.op_Implicit(Sunlix.NET.DDD.ROP.Result.GenericFailure{`1})">
+      <summary>
+        Implicitly converts a <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericFailure`1"/> wrapper to a failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <param name="failure">The failure wrapper containing the error.</param>
+      <returns>A failed result containing the specified error.</returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+      <remarks>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.op_Implicit(`1)">
+      <summary>
+        Implicitly converts an error value to a failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <param name="error">The error value.</param>
+      <returns>A failed result containing the specified error.</returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+      <remarks>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    
+    <!-- ======= Documentation for static factory class Result ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.Result">
+      <summary>
+        Provides factory methods for constructing <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instances.
+      </summary>
+      <remarks>
+        <para>
+          Prefer <see cref="M:Sunlix.NET.DDD.ROP.Result.Succeed``2(``0)"/> / <see cref="M:Sunlix.NET.DDD.ROP.Result.Fail``2(``1)"/>
+          to create fully-typed results, or use single-parameter<br/> <see cref="M:Sunlix.NET.DDD.ROP.Result.Succeed``1(``0)"/> /
+          <see cref="M:Sunlix.NET.DDD.ROP.Result.Fail``1(``0)"/> when type inference is desired together with implicit conversion.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Result.Succeed<TSuccess, TFailure>(TSuccess) method -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result.Succeed``2(``0)">
+      <summary>
+        Creates a successful <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> with the specified value.
+      </summary>
+      <typeparam name="TSuccess">The type of the successful result value.</typeparam>
+      <typeparam name="TFailure">The type of the failed result error.</typeparam>
+      <param name="value">The value to wrap as success.</param>
+      <returns>A successful <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.</returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+var result = Result.Succeed<string, Error>("OK");
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+      
+    </member>
+
+    <!-- Result.Succeed<TSuccess>(TSuccess) method -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result.Succeed``1(``0)">
+      <summary>
+        Creates a lightweight success wrapper that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <typeparam name="TSuccess">The type of the successful result value.</typeparam>
+      <param name="value">The value to wrap as success.</param>
+      <returns>
+        A <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericSuccess`1"/> wrapper
+        that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </returns>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+// implicit conversion to Result<string, Error>
+Result<string, Error> result = Result.Succeed("OK");
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Result.Fail<TSuccess, TFailure>(TFailure) method -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result.Fail``2(``0)">
+      <summary>
+        Creates a failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> with the specified value.
+      </summary>
+      <typeparam name="TSuccess">The type of the successful result value.</typeparam>
+      <typeparam name="TFailure">The type of the failed result error.</typeparam>
+      <param name="error">The error to wrap as failure.</param>
+      <returns>
+        A failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+var result = Result.Fail<string, Error>(Errors.NotFound);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Result.Fail<TFailure>(TFailure) method -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result.Fail``1(``0)">
+      <summary>
+        Creates a lightweight failure wrapper that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <typeparam name="TError">The type of the failed result error.</typeparam>
+      <param name="error">The error to wrap as failure.</param>
+      <returns>
+        A <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericFailure`1"/> wrapper 
+        that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </returns>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+// implicit conversion to Result<string, Error>
+Result<string, Error> result = Result.Fail(Errors.NotFound);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+
+    <!-- ======= Documentation for wrapper class GenericSuccess<T> ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.Result.GenericSuccess`1">
+      <summary>
+        A lightweight success wrapper used to enable type inference and implicit conversion to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <typeparam name="T">The type of the successful value.</typeparam>
+      <remarks>
+        <para>
+          This type is intended for implicit conversion only and is not meant to be used directly in domain logic.
+          Convert it to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> to obtain a proper result.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    
+    <!-- ======= Documentation for wrapper class GenericFailure<T> ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.Result.GenericFailure`1">
+      <summary>
+        A lightweight failure wrapper used to enable type inference and implicit conversion to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <typeparam name="T">The type of the failure value (error).</typeparam>
+      <remarks>
+        <para>
+          This type is intended for for implicit conversion only and is not meant to be used directly in domain logic.
+          Convert it to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> to obtain a proper result.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+    
+
+    <!-- ======= Documentation for static factory class UnitResult ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.UnitResult">
+      <summary>
+        Provides factory methods for constructing <see cref="T:Sunlix.NET.DDD.BaseTypes.Unit"/>-based <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instances.
+      </summary>
+      <remarks>
+        <para>
+          Use when a successful outcome has no meaningful value to return.
+          The canonical success instance is <see cref="F:Sunlix.NET.DDD.BaseTypes.Unit.value"/>.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- UnitResult.Succeed<TFailure>() method -->
+    <member name="M:Sunlix.NET.DDD.ROP.UnitResult.Succeed``1">
+      <summary>
+        Creates a successful <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> with <see cref="T:Sunlix.NET.DDD.BaseTypes.Unit"/> as success type.
+      </summary>
+      <typeparam name="TFailure">The type of the error.</typeparam>
+      <returns>
+        A successful <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing <see cref="F:Sunlix.NET.DDD.BaseTypes.Unit.value"/>.
+      </returns>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+var result = Result.Succeed<Error>();
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- UnitResult.Fail<TFailure>(TFailure) method -->
+    <member name="M:Sunlix.NET.DDD.ROP.UnitResult.Fail``1(``0)">
+      <summary>
+        Creates a failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> with <see cref="T:Sunlix.NET.DDD.BaseTypes.Unit"/> as success type.
+      </summary>
+      <typeparam name="TFailure">The type of the error.</typeparam>
+      <param name="error">The error to wrap as failure.</param>
+      <returns>
+        A failed <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing the specified error.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"></exception>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+var result = Result.Fail(Errors.NotFound);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <!-- Documentation for UnitResult.Succeed () method -->
+    <member name="M:Sunlix.NET.DDD.ROP.UnitResult.Succeed">
+      <summary>
+        Creates a lightweight success wrapper for <see cref="T:Sunlix.NET.DDD.BaseTypes.Unit"/>
+        that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </summary>
+      <returns>
+        A <see cref="T:Sunlix.NET.DDD.ROP.Result.GenericSuccess`1"/> 
+        that can be implicitly converted to <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </returns>
+      <remarks>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+// implicit conversion to Result<Unit, Error>
+Result<Unit, Error> result = Result.Succeed();
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+  </members>
+</doc>
+

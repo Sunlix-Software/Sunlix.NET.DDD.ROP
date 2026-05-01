@@ -1,5 +1,5 @@
 ﻿using Sunlix.NET.DDD.BaseTypes;
-
+using Sunlix.NET.DDD.ROP.Extensions;
 using static Sunlix.NET.DDD.ROP.Tests.Traits;
 
 namespace Sunlix.NET.DDD.ROP.Tests
@@ -9,40 +9,280 @@ namespace Sunlix.NET.DDD.ROP.Tests
     {
         [Trait(Area, Invariants)]
         [Fact]
-        public async Task Should_throw_exception_when_success_function_is_null()
+        public void Should_throw_exception_when_bind_function_is_null()
         {
-            Result<int, Error> Parse(string input) =>
-                int.TryParse(input, out var value)
-                ? Result.Succeed<int, Error>(value)
-                : Result.Fail<int, Error>(new Error("ERR.01", "Invalid input"));
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Result<Unit, Error>> bindFunction = null!;
 
-            var result = Parse("42")
-              .Bind(x => x > 0 
-              ? Result.Succeed<int, Error>(x * 2) 
-              : Result.Fail<int, Error>(new Error("ERR.01", "Must be positive")));
-            Console.WriteLine();
+            sut.Invoking(res => res.Bind(bindFunction))
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithParameterName(nameof(bindFunction));
+        }
 
-            async Task<Result<User, Error>> GetUserAsync(int id)
-            {
-                return Result.Succeed<User, Error>(new User { IsActive = false });
-            }
+        [Fact]
+        [Trait(Area, Invariants)]
+        public void Should_rethrow_bind_function_exception()
+        {
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            var exception = new InvalidOperationException();
+            Func<Unit, Result<Unit, Error>> bindFunction = _ => throw exception;
 
-            async Task<Result<User, Error>> EnsureActiveAsync(User user)
-            {
-                return user.IsActive
-                      ? Result.Succeed<User, Error>(user)
-                      : Result.Fail<User, Error>(new Error("ERR_01", "User is inactive"));
-            }
+            sut.Invoking(res => res.Bind(bindFunction))
+                .Should()
+                .Throw<InvalidOperationException>()
+                .Which.Should().BeSameAs(exception);
+        }
 
-            var result2 = await GetUserAsync(42)
-              .BindAsync(EnsureActiveAsync);
-            Console.WriteLine();
+        [Fact]
+        [Trait(Area, Invariants)]
+        public void Should_return_bind_function_result()
+        {
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Result<int, Error>> bindFunction = 
+                _ => Result.Succeed<int, Error>(0);
+
+            var result = sut.Bind(bindFunction);
+
+            ResultAssert.Success(result, 0);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public void Should_return_bind_function_failure()
+        {
+            Result<Unit, int> sut = UnitResult.Succeed();
+            Func<Unit, Result<Unit, int>> bindFunction =
+                _ => Result.Fail<Unit, int>(1);
+
+            var result = sut.Bind(bindFunction);
+
+            ResultAssert.Failure(result, 1);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public void Should_return_initial_failure()
+        {
+            Result<Unit, int> sut = UnitResult.Fail(1);
+            Func<Unit, Result<Unit, int>> bindFunction =
+                _ => Result.Fail<Unit, int>(2);
+
+            var result = sut.Bind(bindFunction);
+
+            ResultAssert.Failure(result, 1);
         }
     }
 
-    public class User
+    [Trait(Category, BindAsyncCategory)]
+    public class BindAsyncTests
     {
-        public int Id { get; set; }
-        public bool IsActive { get; set; }
+        [Trait(Area, Invariants)]
+        [Fact]
+        public async Task Should_throw_exception_when_bind_function_is_null()
+        {
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync = null!;
+
+            await sut.Invoking(res => res.BindAsync(bindFunctionAsync))
+                .Should()
+                .ThrowAsync<ArgumentNullException>()
+                .WithParameterName(nameof(bindFunctionAsync));
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_rethrow_bind_function_exception()
+        {
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            var exception = new InvalidOperationException();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync = 
+                _ => Task.FromException<Result<Unit, Error>>(exception);
+
+            (await sut.Invoking(res => res.BindAsync(bindFunctionAsync))
+                .Should()
+                .ThrowAsync<InvalidOperationException>())
+                .Which.Should().BeSameAs(exception);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_result()
+        {
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Task<Result<int, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Succeed<int, Error>(0));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Success(result, 0);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_failure()
+        {
+            Result<Unit, int> sut = UnitResult.Succeed();
+            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, int>(1));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Failure(result, 1);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_initial_failure()
+        {
+            Result<Unit, int> sut = UnitResult.Fail(1);
+            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, int>(2));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Failure(result, 1);
+        }
+    }
+
+    [Trait(Category, ExtensionsBindCategory)]
+    public class ExtensionsBindTests
+    {
+        [Trait(Area, Invariants)]
+        [Fact]
+        public async Task Should_throw_exception_when_bind_function_is_null()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Result<Unit, Error>> bindFunction = null!;
+
+            await sut.Invoking(res => res.Bind(bindFunction))
+                .Should()
+                .ThrowAsync<ArgumentNullException>()
+                .WithParameterName(nameof(bindFunction));
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_rethrow_bind_function_exception()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            var exception = new InvalidOperationException();
+            Func<Unit, Result<Unit, Error>> bindFunction = _ => throw exception;
+
+            (await sut.Invoking(res => res.Bind(bindFunction))
+                .Should()
+                .ThrowAsync<InvalidOperationException>())
+                .Which.Should().BeSameAs(exception);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_result()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Result<int, Error>> bindFunction =
+                _ => Result.Succeed<int, Error>(0);
+
+            var result = await sut.Bind(bindFunction);
+
+            ResultAssert.Success(result, 0);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_failure()
+        {
+            Task<Result<Unit, int>> sut = UnitResult.Succeed<int>().AsTask();
+            Func<Unit, Result<Unit, int>> bindFunction =
+                _ => Result.Fail<Unit, int>(1);
+
+            var result = await sut.Bind(bindFunction);
+
+            ResultAssert.Failure(result, 1);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_initial_failure()
+        {
+            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
+            Func<Unit, Result<Unit, int>> bindFunction =
+                _ => Result.Fail<Unit, int>(2);
+
+            var result = await sut.Bind(bindFunction);
+
+            ResultAssert.Failure(result, 1);
+        }
+    }
+
+    [Trait(Category, ExtensionsBindAsyncCategory)]
+    public class ExtensionsBindAsyncTests
+    {
+        [Trait(Area, Invariants)]
+        [Fact]
+        public async Task Should_throw_exception_when_bind_function_is_null()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync = null!;
+
+            await sut.Invoking(res => res.BindAsync(bindFunctionAsync))
+                .Should()
+                .ThrowAsync<ArgumentNullException>()
+                .WithParameterName(nameof(bindFunctionAsync));
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_rethrow_bind_function_exception()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            var exception = new InvalidOperationException();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync = 
+                _ => Task.FromException<Result<Unit, Error>>(exception);
+
+            (await sut.Invoking(res => res.BindAsync(bindFunctionAsync))
+                .Should()
+                .ThrowAsync<InvalidOperationException>())
+                .Which.Should().BeSameAs(exception);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_result()
+        {
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Task<Result<int, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Succeed<int, Error>(0));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Success(result, 0);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_bind_function_failure()
+        {
+            Task<Result<Unit, int>> sut = UnitResult.Succeed<int>().AsTask();
+            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, int>(1));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Failure(result, 1);
+        }
+
+        [Fact]
+        [Trait(Area, Invariants)]
+        public async Task Should_return_initial_failure()
+        {
+            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
+            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, int>(2));
+
+            var result = await sut.BindAsync(bindFunctionAsync);
+
+            ResultAssert.Failure(result, 1);
+        }
     }
 }

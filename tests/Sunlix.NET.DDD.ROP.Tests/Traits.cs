@@ -12,5 +12,7 @@
 
         public const string BindCategory = "Bind";
         public const string BindAsyncCategory = "BindAsync";
+        public const string ExtensionsBindCategory = "ExtensionsBind";
+        public const string ExtensionsBindAsyncCategory = "ExtensionsBindAsync";
     }
 }

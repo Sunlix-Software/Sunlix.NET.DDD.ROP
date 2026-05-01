@@ -51,26 +51,26 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public void Should_return_bind_function_failure()
         {
-            Result<Unit, int> sut = UnitResult.Succeed();
-            Func<Unit, Result<Unit, int>> bindFunction =
-                _ => Result.Fail<Unit, int>(1);
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Result<Unit, Error>> bindFunction =
+                _ => Result.Fail<Unit, Error>(Errors.Error1);
 
             var result = sut.Bind(bindFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
 
         [Fact]
         [Trait(Area, Invariants)]
         public void Should_return_initial_failure()
         {
-            Result<Unit, int> sut = UnitResult.Fail(1);
-            Func<Unit, Result<Unit, int>> bindFunction =
-                _ => Result.Fail<Unit, int>(2);
+            Result<Unit, Error> sut = UnitResult.Fail(Errors.Error1);
+            Func<Unit, Result<Unit, Error>> bindFunction =
+                _ => Result.Fail<Unit, Error>(Errors.Error2);
 
             var result = sut.Bind(bindFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -122,26 +122,26 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_bind_function_failure()
         {
-            Result<Unit, int> sut = UnitResult.Succeed();
-            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
-                _ => Task.FromResult(Result.Fail<Unit, int>(1));
+            Result<Unit, Error> sut = UnitResult.Succeed();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, Error>(Errors.Error1));
 
             var result = await sut.BindAsync(bindFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
 
         [Fact]
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Result<Unit, int> sut = UnitResult.Fail(1);
-            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
-                _ => Task.FromResult(Result.Fail<Unit, int>(2));
+            Result<Unit, Error> sut = UnitResult.Fail(Errors.Error1);
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, Error>(Errors.Error2));
 
             var result = await sut.BindAsync(bindFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -192,26 +192,26 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_bind_function_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Succeed<int>().AsTask();
-            Func<Unit, Result<Unit, int>> bindFunction =
-                _ => Result.Fail<Unit, int>(1);
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Result<Unit, Error>> bindFunction =
+                _ => Result.Fail<Unit, Error>(Errors.Error1);
 
             var result = await sut.Bind(bindFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
 
         [Fact]
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
-            Func<Unit, Result<Unit, int>> bindFunction =
-                _ => Result.Fail<Unit, int>(2);
+            Task<Result<Unit, Error>> sut = UnitResult.Fail(Errors.Error1).AsTask();
+            Func<Unit, Result<Unit, Error>> bindFunction =
+                _ => Result.Fail<Unit, Error>(Errors.Error2);
 
             var result = await sut.Bind(bindFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -263,26 +263,26 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_bind_function_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Succeed<int>().AsTask();
-            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
-                _ => Task.FromResult(Result.Fail<Unit, int>(1));
+            Task<Result<Unit, Error>> sut = UnitResult.Succeed<Error>().AsTask();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, Error>(Errors.Error1));
 
             var result = await sut.BindAsync(bindFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
 
         [Fact]
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
-            Func<Unit, Task<Result<Unit, int>>> bindFunctionAsync =
-                _ => Task.FromResult(Result.Fail<Unit, int>(2));
+            Task<Result<Unit, Error>> sut = UnitResult.Fail(Errors.Error1).AsTask();
+            Func<Unit, Task<Result<Unit, Error>>> bindFunctionAsync =
+                _ => Task.FromResult(Result.Fail<Unit, Error>(Errors.Error2));
 
             var result = await sut.BindAsync(bindFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 }

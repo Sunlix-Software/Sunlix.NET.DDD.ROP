@@ -11,4 +11,36 @@
     <PackageReference Include="Sunlix.NET.DDD.BaseTypes" Version="1.0.4" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<PackageId>Sunlix.NET.DDD.ROP</PackageId>
+		<Version>1.0.2</Version>
+		<Authors>Igor Bzovsky</Authors>
+		<Company>Sunlix</Company>
+		<Description>
+			Sunlix.NET.DDD.ROP is a lightweight implementation of the Railway-Oriented Programming pattern for C#.
+			It provides a composable Result type and a set of functional operators for building clear and predictable execution pipelines without exceptions.</Description>
+		<PackageTags>Sunlix, DDD, Result, ROP</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.BaseTypes</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/Sunlix-Software/Sunlix.NET.DDD.BaseTypes</PackageProjectUrl>
+		<PackageIcon>sunlix.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+		<PackageReleaseNotes>
+			1.0.2 - 2026-01-05
+			Fixed
+			- Fixed XML documentation.
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="assets\sunlix.png" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="" />
+		<None Include="$(OutputPath)$(AssemblyName).xml" Pack="true" PackagePath="lib/$(TargetFramework)/" Condition="Exists('$(OutputPath)$(AssemblyName).xml')" />
+	</ItemGroup>
+
 </Project>

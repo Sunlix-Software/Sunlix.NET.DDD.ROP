@@ -50,12 +50,12 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public void Should_return_initial_failure()
         {
-            Result<Unit, int> sut = UnitResult.Fail(1);
+            Result<Unit, Error> sut = UnitResult.Fail(Errors.Error1);
             Func<Unit, int> mapFunction = _ => 0;
 
             var result = sut.Map(mapFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -106,12 +106,12 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Result<Unit, int> sut = UnitResult.Fail(1);
+            Result<Unit, Error> sut = UnitResult.Fail(Errors.Error1);
             Func<Unit, Task<int>> mapFunctionAsync = _ => Task.FromResult(0);
 
             var result = await sut.MapAsync(mapFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -161,12 +161,12 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
+            Task<Result<Unit, Error>> sut = UnitResult.Fail(Errors.Error1).AsTask();
             Func<Unit, int> mapFunction = _ => 0;
 
             var result = await sut.Map(mapFunction);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 
@@ -217,12 +217,12 @@ namespace Sunlix.NET.DDD.ROP.Tests
         [Trait(Area, Invariants)]
         public async Task Should_return_initial_failure()
         {
-            Task<Result<Unit, int>> sut = UnitResult.Fail(1).AsTask();
+            Task<Result<Unit, Error>> sut = UnitResult.Fail(Errors.Error1).AsTask();
             Func<Unit, Task<int>> mapFunctionAsync = _ => Task.FromResult(0);
 
             var result = await sut.MapAsync(mapFunctionAsync);
 
-            ResultAssert.Failure(result, 1);
+            ResultAssert.Failure(result, Errors.Error1);
         }
     }
 }

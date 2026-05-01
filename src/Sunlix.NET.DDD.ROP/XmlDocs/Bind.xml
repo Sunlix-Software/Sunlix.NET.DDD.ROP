@@ -70,7 +70,7 @@ Result<User, Error> GetUser(int id) { ... }
 
 async Task<Result<Subscription, Error>> GetSubscriptionAsync(User user) { ... }
 
-Task<Result<Subscription, Error>> result = await GetUser(42)
+Result<Subscription, Error> result = await GetUser(42)
     .BindAsync(GetSubscriptionAsync);
 ]]>
           </code>
@@ -167,7 +167,7 @@ async Task<Result<User, Error>> GetUserAsync(int id) { ... }
 
 Result<Subscription, Error> GetSubscription(User user) { ... }
 
-Task<Result<Subscription, Error>> result = await GetUserAsync(42)
+Result<Subscription, Error> result = await GetUserAsync(42)
     .Bind(GetSubscription);
 ]]>
           </code>
@@ -209,7 +209,7 @@ async Task<Result<User, Error>> GetUserAsync(int id) { ... }
 
 async Task<Result<Subscription, Error>> GetSubscriptionAsync(User user) { ... }
 
-Task<Result<Subscription, Error>> result = await GetUserAsync(42)
+Result<Subscription, Error> result = await GetUserAsync(42)
     .BindAsync(GetSubscriptionAsync);
 ]]>
           </code>

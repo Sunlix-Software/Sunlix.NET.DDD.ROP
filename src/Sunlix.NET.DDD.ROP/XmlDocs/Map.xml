@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+
+    <!-- ======= Documentation for Map methods ======= -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.Map``1(System.Func{`0,``0})">
+      <summary>
+        Applies a transformation function to the success value if this result represents success, 
+        or returns a failed result with the original error if this result represents failure.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="mapFunction">
+        A function that takes the success value and returns a transformed value of type <typeparamref name="TNewSuccess"/>.
+      </param>
+      <returns>
+        A new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the transformed success value, 
+        or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="mapFunction"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          This is the functor map operation. Unlike <see cref="M:Sunlix.NET.DDD.ROP.Result`2.Bind``1(System.Func{`0,Sunlix.NET.DDD.ROP.Result{``0,`1}})"/>,
+          the transformation function returns a plain value, not a result.
+          Use Map when you want to transform the success value without creating a new result context.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+UserDetails MapToUserDetails(User user) { ... }
+
+Result<UserDetails, Error> result = GetUser(42)
+  .Map(MapToUserDetails);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.MapAsync``1(System.Func{`0,System.Threading.Tasks.Task{``0}})">
+      <summary>
+        Asynchronously applies a transformation function to the success value if this result represents success, 
+        or returns a failed result with the original error if this result represents failure.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="mapFunctionAsync">
+        An async function that takes the success value and returns a task yielding a transformed value of type <typeparamref name="TNewSuccess"/>.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the transformed success value, 
+        or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="mapFunctionAsync"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          This is the asynchronous version of <see cref="M:Sunlix.NET.DDD.ROP.Result`2.Map``1(System.Func{`0,``0})"/>.
+          It allows you to perform asynchronous transformations on the success value while preserving the result context.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+async Task<UserDetails> MapToUserDetailsAsync(User user) { ... }
+
+Result<UserDetails, Error> result = await GetUser(42)
+  .MapAsync(MapToUserDetailsAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.MapInternal``1(System.Func{`0,``0})">
+      <summary>
+        Internal method that implements the map operation for derived classes.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="mapFunction">
+        A function that takes the success value and returns a transformed value.
+      </param>
+      <returns>
+        A new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> based on the implementation in derived classes.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific map behavior.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.MapInternalAsync``1(System.Func{`0,System.Threading.Tasks.Task{``0}})">
+      <summary>
+        Internal method that implements the asynchronous map operation for derived classes.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="mapFunctionAsync">
+        An async function that takes the success value and returns a task yielding a transformed value.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> based on the implementation in derived classes.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific async map behavior.
+        </para>
+      </remarks>
+    </member>
+
+
+    <!-- ======= Documentation for MapExtensions ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.MapExtensions">
+      <summary>
+        Provides extension methods for map operations on tasks that yield <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instances.
+      </summary>
+      <remarks>
+        <para>
+          These extension methods enable fluent chaining of map operations on asynchronous results,
+          allowing seamless transformation of async operation results in the Result functor.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.MapExtensions.Map``3(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``1,``2}},System.Func{``1,``0})">
+      <summary>
+        Applies a synchronous map function to the result of an awaited task.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <typeparam name="TSuccess">The type of the success value in the task result.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="mapFunction">
+        A function that takes the success value and returns a transformed value.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the transformed success value, 
+        or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="mapFunction"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain synchronous map operations after awaiting a task result,
+          providing convenient fluent syntax for Result transformations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+  
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+UserDetails MapToUserDetails(User user) { ... }
+
+Result<UserDetails, Error> result = await GetUserAsync(42)
+  .Map(MapToUserDetails);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.MapExtensions.MapAsync``3(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``1,``2}},System.Func{``1,System.Threading.Tasks.Task{``0}})">
+      <summary>
+        Asynchronously applies an async map function to the result of an awaited task.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <typeparam name="TSuccess">The type of the success value in the task result.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="mapFunctionAsync">
+        An async function that takes the success value and returns a task yielding a transformed value.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the transformed success value, 
+        or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="mapFunctionAsync"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain asynchronous map operations after awaiting a task result,
+          providing convenient fluent syntax for async Result transformations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+  
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+async Task<UserDetails> MapToUserDetailsAsync(User user) { ... }
+
+Result<UserDetails, Error> result = await GetUserAsync(42)
+  .MapAsync(MapToUserDetailsAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+  </members>
+</doc>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+
+    <!-- ======= Documentation for Bind methods ======= -->
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.Bind``1(System.Func{`0,Sunlix.NET.DDD.ROP.Result{``0,`1}})">
+      <summary>
+        Applies a function to the success value if this result represents success, 
+        or returns a failed result with the original error if this result represents failure.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="bindFunction">
+        A function that takes the success value and returns a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> 
+        with a different success type.
+      </param>
+      <returns>
+        A new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the result of applying 
+        <paramref name="bindFunction"/> to the success value, or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="bindFunction"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          This is the monadic bind operation (flatMap in functional programming terminology).
+          It allows chaining operations that return results, automatically handling failures.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+Result<Subscription, Error> GetSubscription(User user) { ... }
+
+Result<Subscription, Error> result = GetUser(42)
+    .Bind(GetSubscription);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.BindAsync``1(System.Func{`0,System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``0,`1}}})">
+      <summary>
+        Asynchronously applies a function to the success value if this result represents success, 
+        or returns a failed result with the original error if this result represents failure.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="bindFunctionAsync">
+        An async function that takes the success value and returns a task yielding a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> 
+        with a different success type.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the result of applying 
+        <paramref name="bindFunctionAsync"/> to the success value, or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException"><paramref name="bindFunctionAsync"/> is <c>null</c>.</exception>
+      <remarks>
+        <para>
+          This is the asynchronous version of <see cref="M:Sunlix.NET.DDD.ROP.Result`2.Bind``1(System.Func{`0,Sunlix.NET.DDD.ROP.Result{``0,`1}})"/>.
+          It allows chaining asynchronous operations that return results, automatically handling failures.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+Result<User, Error> GetUser(int id) { ... }
+
+async Task<Result<Subscription, Error>> GetSubscriptionAsync(User user) { ... }
+
+Task<Result<Subscription, Error>> result = await GetUser(42)
+    .BindAsync(GetSubscriptionAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.BindInternal``1(System.Func{`0,Sunlix.NET.DDD.ROP.Result{``0,`1}})">
+      <summary>
+        Internal method that implements the bind operation for derived classes.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="bindFunction">
+        A function that takes the success value and returns a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </param>
+      <returns>
+        A new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> based on the implementation in derived classes.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific bind behavior.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.Result`2.BindInternalAsync``1(System.Func{`0,System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``0,`1}}})">
+      <summary>
+        Internal method that implements the asynchronous bind operation for derived classes.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <param name="bindFunctionAsync">
+        An async function that takes the success value and returns a task yielding a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> based on the implementation in derived classes.
+      </returns>
+      <remarks>
+        <para>
+          This is an abstract protected method intended to be overridden by derived classes 
+          (Success and Failure) to provide their specific async bind behavior.
+        </para>
+      </remarks>
+    </member>
+
+
+    <!-- ======= Documentation for BindExtensions ======= -->
+    <member name="T:Sunlix.NET.DDD.ROP.BindExtensions">
+      <summary>
+        Provides extension methods for binding operations on tasks that yield <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> instances.
+      </summary>
+      <remarks>
+        <para>
+          These extension methods enable fluent chaining of bind operations on asynchronous results,
+          allowing seamless composition of async operations in the Result monad.
+        </para>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.BindExtensions.Bind``3(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``1,``2}},System.Func{``1,Sunlix.NET.DDD.ROP.Result{``0,``2}})">
+      <summary>
+        Applies a synchronous bind function to the result of an awaited task.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <typeparam name="TSuccess">The type of the success value in the task result.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="bindFunction">
+        A function that takes the success value and returns a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the result of applying 
+        <paramref name="bindFunction"/> to the success value, or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="bindFunction"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain synchronous bind operations after awaiting a task result,
+          providing convenient fluent syntax for Result operations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+Result<Subscription, Error> GetSubscription(User user) { ... }
+
+Task<Result<Subscription, Error>> result = await GetUserAsync(42)
+    .Bind(GetSubscription);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+    <member name="M:Sunlix.NET.DDD.ROP.BindExtensions.BindAsync``3(System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``1,``2}},System.Func{``1,System.Threading.Tasks.Task{Sunlix.NET.DDD.ROP.Result{``0,``2}}})">
+      <summary>
+        Asynchronously applies an async bind function to the result of an awaited task.
+      </summary>
+      <typeparam name="TNewSuccess">The type of the success value in the returned result.</typeparam>
+      <typeparam name="TSuccess">The type of the success value in the task result.</typeparam>
+      <typeparam name="TFailure">The type of the failure value.</typeparam>
+      <param name="taskResult">The task that yields the source result.</param>
+      <param name="bindFunctionAsync">
+        An async function that takes the success value and returns a task yielding a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/>.
+      </param>
+      <returns>
+        A task that yields a new <see cref="T:Sunlix.NET.DDD.ROP.Result`2"/> containing either the result of applying 
+        <paramref name="bindFunctionAsync"/> to the success value, or the original failure.
+      </returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="taskResult"/> or <paramref name="bindFunctionAsync"/> is <c>null</c>.
+      </exception>
+      <remarks>
+        <para>
+          This extension method allows you to chain asynchronous bind operations after awaiting a task result,
+          providing convenient fluent syntax for async Result operations.
+        </para>
+        <example>
+          Example:
+          <code>
+<![CDATA[
+async Task<Result<User, Error>> GetUserAsync(int id) { ... }
+
+async Task<Result<Subscription, Error>> GetSubscriptionAsync(User user) { ... }
+
+Task<Result<Subscription, Error>> result = await GetUserAsync(42)
+    .BindAsync(GetSubscriptionAsync);
+]]>
+          </code>
+        </example>
+        <para>
+          For more details, see the <see href="https://github.com/Sunlix-Software/Sunlix.NET.DDD.ROP/blob/main/README.md">official documentation</see>.
+        </para>
+      </remarks>
+    </member>
+
+  </members>
+</doc>

@@ -9,5 +9,8 @@
         public const string Invariants = "Invariants";
         public const string ImplicitConversion = "Implicit conversion";
         public const string UnitResult = "UnitResult";
+
+        public const string BindCategory = "Bind";
+        public const string BindAsyncCategory = "BindAsync";
     }
 }
